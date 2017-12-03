@@ -402,7 +402,7 @@ int main(int argc, char **argv)
 
         the_map[from] = to;
 
-        stderr_wsprintf(TEXT("String #%d: \"%s\" --> \"%s\"\n"), k, from, to);
+        stderr_wsprintf(TEXT("#%d: \"%s\" --> \"%s\"\n"), k, from, to);
     }
 
     int ret = CopyRenameReplace(targv[1], targv[2], the_map);
