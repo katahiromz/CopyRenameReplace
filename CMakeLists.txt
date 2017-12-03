@@ -66,6 +66,8 @@ option(USE_UNICODE "Use Unicode" OFF)
 if(USE_UNICODE)
     add_definitions(-DUNICODE=1 -D_UNICODE=1)
     message(STATUS "Using Unicode")
+else()
+    message(STATUS "Using MBCS")
 endif()
 
 # add EXE

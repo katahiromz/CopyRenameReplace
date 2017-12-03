@@ -25,7 +25,7 @@ enum EXITCODE
 void show_help(void)
 {
     using namespace std;
-    printf("crr --- CopyRenameReplace version 0.8 by katahiromz\n");
+    printf("crr --- CopyRenameReplace version 0.9 by katahiromz\n");
     printf("\n");
     printf("Copies files/directories, with renaming and replacing.\n");
     printf("\n");
@@ -353,14 +353,6 @@ int CopyRenameReplace(const MString& item0, const MString& item1, const MapType&
         return EXITCODE_TOOLONGPATH;
     }
 
-    MChar *title = mpath_FindTitle(path1);
-    MString str = title;
-    ReplaceStringByMap(str, the_map);
-    lstrcpy(title, str.c_str());
-    int ret = CheckName(title);
-    if (ret)
-        return ret;
-
     if (mdir_Exists(path0))
     {
         mpath_AddSep(path0);
@@ -376,7 +368,7 @@ int CopyRenameReplace(const MString& item0, const MString& item1, const MapType&
         return EXITCODE_INVALIDDEST;
     }
 
-    ret = CopyRenameReplaceMain(strPath0, strPath1, the_map);
+    int ret = CopyRenameReplaceMain(strPath0, strPath1, the_map);
 
     mdir_Set(cur_dir);
     return ret;
