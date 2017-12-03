@@ -23,11 +23,13 @@ enum EXITCODE
 
 void show_help(void)
 {
-    printf("crr --- CopyRenameReplace version 0.3 by katahiromz\n");
-    printf("Usage: crr \"source\" \"destination\" \"string1\" \"string2\"\n");
+    printf("crr --- CopyRenameReplace version 0.5 by katahiromz\n");
+    printf("Copies files/directories, with renaming and replacing \"string1\" with \"string2\", \"string3\" with \"string4\", ...\n");
+    printf("\n");
+    printf("Usage: crr \"source\" \"destination\"\n");
+    printf("       crr \"source\" \"destination\" \"string1\" \"string2\"\n");
     printf("       crr \"source\" \"destination\" \"string1\" \"string2\" \"string3\" \"string4\" ...\n");
     printf("\n");
-    printf("Copies files/directories, with renaming and replacing \"string1\" with \"string2\", \"string3\" with \"string4\", ...\n");
 }
 
 void stderr_wsprintf(const TCHAR *szFormat, ...)
@@ -205,7 +207,12 @@ int CopyRenameReplaceFile(const MString& path0, const MString& path1, const MapT
     ReplaceStringByMap(str, the_map);
     lstrcpy(pch, str.c_str());
 
-    return ReplaceFile(path0, szPath1, the_map);
+    ret = ReplaceFile(path0, szPath1, the_map);
+    if (ret == EXITCODE_SUCCESS)
+    {
+        stderr_wsprintf("Done.\n");
+    }
+    return ret;
 }
 
 int CopyRenameReplaceDir(const MString& path0, const MString& path1, const MapType& the_map)
@@ -285,33 +292,34 @@ int CopyRenameReplaceDir(const MString& path0, const MString& path1, const MapTy
 
 int CopyRenameReplaceMain(const MString& path0, const MString& path1, const MapType& the_map)
 {
-    if (mdir_Exists(path0.c_str()))
+    const MChar *src = path0.c_str(), *dest = path1.c_str();
+    if (mdir_Exists(src))
     {
-        if (!mpath_Exists(path1.c_str()))
+        if (!mpath_Exists(dest))
         {
-            if (!mdir_Create(path1.c_str()))
+            if (!mdir_Create(dest))
             {
-                stderr_wsprintf(TEXT("ERROR: Unable to create destination directory.\n"));
+                stderr_wsprintf(TEXT("ERROR: Unable to create destination directory '%s'.\n"), dest);
                 return EXITCODE_CANTCREATEDIR;
             }
         }
-        else if (mfile_Exists(path1.c_str()))
+        else if (mfile_Exists(dest))
         {
-            stderr_wsprintf(TEXT("ERROR: destination is not directory.\n"));
+            stderr_wsprintf(TEXT("ERROR: destination '%s' is not directory.\n"), dest);
             return EXITCODE_NOTDIR;
         }
         return CopyRenameReplaceDir(path0, path1, the_map);
     }
     else
     {
-        if (!mpath_Exists(path0.c_str()))
+        if (!mpath_Exists(src))
         {
-            stderr_wsprintf(TEXT("ERROR: source doesn't exist.\n"));
+            stderr_wsprintf(TEXT("ERROR: source '%s' doesn't exist.\n"), src);
             return EXITCODE_NOSOURCE;
         }
-        else if (mdir_Exists(path1.c_str()))
+        else if (mdir_Exists(dest))
         {
-            stderr_wsprintf(TEXT("ERROR: destination is not a normal file.\n"));
+            stderr_wsprintf(TEXT("ERROR: destination '%s' is not a normal file.\n"), dest);
             return EXITCODE_NOTFILE;
         }
         return CopyRenameReplaceFile(path0, path1, the_map);
@@ -339,8 +347,11 @@ int CopyRenameReplace(const MString& item0, const MString& item1, const MapType&
     MChar path0[MAX_PATH], path1[MAX_PATH];
     mpath_GetFullPath(path0, item0.c_str());
     mpath_GetFullPath(path1, item1.c_str());
-    mpath_AddSep(path0);
-    mpath_AddSep(path1);
+    if (mdir_Exists(path0))
+    {
+        mpath_AddSep(path0);
+        mpath_AddSep(path1);
+    }
 
     MString strPath0 = path0, strPath1 = path1;
 
@@ -366,7 +377,7 @@ int main(int argc, char **argv)
     char **targv = argv;
 #endif
 
-    if (argc < 5 ||
+    if (argc < 3 ||
         lstrcmpi(argv[1], TEXT("--help")) == 0 ||
         lstrcmpi(argv[1], TEXT("--version")) == 0)
     {
