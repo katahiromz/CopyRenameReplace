@@ -24,11 +24,12 @@ enum EXITCODE
 void show_help(void)
 {
     printf("crr --- CopyRenameReplace version 0.6 by katahiromz\n");
-    printf("Copies files/directories, with renaming and replacing \"string1\" with \"string2\", \"string3\" with \"string4\", ...\n");
+    printf("\n");
+    printf("Copies files/directories, with renaming and replacing.\n");
     printf("\n");
     printf("Usage: crr \"source\" \"destination\"\n");
-    printf("       crr \"source\" \"destination\" \"string1\" \"string2\"\n");
-    printf("       crr \"source\" \"destination\" \"string1\" \"string2\" \"string3\" \"string4\" ...\n");
+    printf("       crr \"source\" \"destination\" \"replacee_1\" \"replace_with_1\"\n");
+    printf("       crr \"source\" \"destination\" \"replacee_1\" \"replace_with_1\" \"replacee_2\" \"replace_with_2\" ...\n");
     printf("\n");
 }
 
