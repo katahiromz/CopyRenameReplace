@@ -210,21 +210,21 @@ int CopyRenameReplaceFile(const MString& path0, const MString& path1, const MapT
     ret = ReplaceFile(path0, szPath1, the_map);
     if (ret == EXITCODE_SUCCESS)
     {
-        stderr_wsprintf("Done.\n");
+        stderr_wsprintf(TEXT("Done.\n"));
     }
     return ret;
 }
 
 int CopyRenameReplaceDir(const MString& path0, const MString& path1, const MapType& the_map)
 {
-    stderr_wsprintf("Getting path list...\n");
+    stderr_wsprintf(TEXT("Getting path list...\n"));
     std::vector<MString> paths;
     mdir_GetFullPathList(path0.c_str(), paths);
 
     int ret = EXITCODE_SUCCESS;
     std::vector<MString>::iterator it, end = paths.end();
 
-    stderr_wsprintf("Checking pathnames...\n");
+    stderr_wsprintf(TEXT("Checking pathnames...\n"));
     for (it = paths.begin(); it != end; ++it)
     {
         MString& old_path = *it;
@@ -234,7 +234,7 @@ int CopyRenameReplaceDir(const MString& path0, const MString& path1, const MapTy
         if (new_path.find(path0) != 0)
             continue;
 
-        new_path.replace(0, path0.size(), "");
+        new_path.replace(0, path0.size(), TEXT(""));
         //stderr_wsprintf("--- %s\n", new_path.c_str());
         ReplaceStringByMap(new_path, the_map);
         //stderr_wsprintf("+++ %s\n", new_path.c_str());
@@ -245,7 +245,7 @@ int CopyRenameReplaceDir(const MString& path0, const MString& path1, const MapTy
             return ret;
     }
 
-    stderr_wsprintf("Processing...\n");
+    stderr_wsprintf(TEXT("Processing...\n"));
     for (it = paths.begin(); it != end; ++it)
     {
         MString& old_path = *it;
@@ -255,7 +255,7 @@ int CopyRenameReplaceDir(const MString& path0, const MString& path1, const MapTy
         if (new_path.find(path0) != 0)
             continue;
 
-        new_path.replace(0, path0.size(), "");
+        new_path.replace(0, path0.size(), TEXT(""));
         //stderr_wsprintf("--- %s\n", new_path.c_str());
         ReplaceStringByMap(new_path, the_map);
         //stderr_wsprintf("+++ %s\n", new_path.c_str());
@@ -266,7 +266,7 @@ int CopyRenameReplaceDir(const MString& path0, const MString& path1, const MapTy
             if (!mdir_Create(new_path.c_str()) &&
                 !mdir_Exists(new_path.c_str()))
             {
-                stderr_wsprintf("NG: \"%s\" --> \"%s\"\n", old_path.c_str(), new_path.c_str());
+                stderr_wsprintf(TEXT("NG: \"%s\" --> \"%s\"\n"), old_path.c_str(), new_path.c_str());
                 ret = EXITCODE_CANTCREATEDIR;
                 break;
             }
@@ -276,16 +276,16 @@ int CopyRenameReplaceDir(const MString& path0, const MString& path1, const MapTy
             int ret2 = ReplaceFile(old_path, new_path, the_map);
             if (ret != EXITCODE_SUCCESS)
             {
-                stderr_wsprintf("NG: \"%s\" --> \"%s\"\n", old_path.c_str(), new_path.c_str());
+                stderr_wsprintf(TEXT("NG: \"%s\" --> \"%s\"\n"), old_path.c_str(), new_path.c_str());
                 ret = ret2;
                 break;
             }
         }
-        stderr_wsprintf("OK: \"%s\" --> \"%s\"\n", old_path.c_str(), new_path.c_str());
+        stderr_wsprintf(TEXT("OK: \"%s\" --> \"%s\"\n"), old_path.c_str(), new_path.c_str());
     }
 
     if (ret == ERROR_SUCCESS)
-        stderr_wsprintf("Done.\n");
+        stderr_wsprintf(TEXT("Done.\n"));
 
     return ret;
 }
@@ -378,15 +378,15 @@ int main(int argc, char **argv)
 #endif
 
     if (argc < 3 ||
-        lstrcmpi(argv[1], TEXT("--help")) == 0 ||
-        lstrcmpi(argv[1], TEXT("--version")) == 0)
+        lstrcmpi(targv[1], TEXT("--help")) == 0 ||
+        lstrcmpi(targv[1], TEXT("--version")) == 0)
     {
         show_help();
         return 0;
     }
 
-    stderr_wsprintf("source     : \"%s\"\n", targv[1]);
-    stderr_wsprintf("destination: \"%s\"\n", targv[2]);
+    stderr_wsprintf(TEXT("source     : \"%s\"\n"), targv[1]);
+    stderr_wsprintf(TEXT("destination: \"%s\"\n"), targv[2]);
 
     MapType the_map;
     int k = 0;
@@ -401,7 +401,7 @@ int main(int argc, char **argv)
 
         the_map[from] = to;
 
-        stderr_wsprintf("String #%d: \"%s\" --> \"%s\"\n", k, from, to);
+        stderr_wsprintf(TEXT("String #%d: \"%s\" --> \"%s\"\n"), k, from, to);
     }
 
     int ret = CopyRenameReplace(targv[1], targv[2], the_map);

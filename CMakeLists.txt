@@ -28,11 +28,6 @@ if (NOT uppercase_CMAKE_BUILD_TYPE MATCHES "^(DEBUG|RELEASE|RELWITHDEBINFO|MINSI
     message(FATAL_ERROR "Invalid value for CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
 endif()
 
-# define _DEBUG on Debug version
-if (uppercase_CMAKE_BUILD_TYPE STREQUAL "DEBUG")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_DEBUG")
-endif()
-
 # set output directory (build/)
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
@@ -69,7 +64,7 @@ endif()
 # Use Unicode?
 option(USE_UNICODE "Use Unicode" OFF)
 if(USE_UNICODE)
-    add_definitions(-DUNIOCDE -D_UNICODE)
+    add_definitions(-DUNICODE=1 -D_UNICODE=1)
     message(STATUS "Using Unicode")
 endif()
 
