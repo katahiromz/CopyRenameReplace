@@ -304,7 +304,7 @@ int CopyRenameReplaceMain(const MString& path0, const MString& path1, const MapT
             stderr_wsprintf(TEXT("ERROR: destination '%s' is not directory.\n"), dest);
             return EXITCODE_NOTDIR;
         }
-        return CopyRenameReplaceDir(src, dest, the_map);
+        return CopyRenameReplaceDir(path0, path1, the_map);
     }
     else
     {
