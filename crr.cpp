@@ -162,7 +162,7 @@ int ReplaceFile(const MString& src_file, const MString& dest_file, const MapType
     BYTE *old_bin = mfile_GetContents(src_file.c_str(), &size);
     if (old_bin == NULL)
     {
-        stderr_wsprintf(TEXT("ERROR: Unable to read file: '%s'\n"), src_file.c_str());
+        stderr_wsprintf(TEXT("ERROR: Unable to read file: '%s'.\n"), src_file.c_str());
         return EXITCODE_CANTREAD;
     }
 
@@ -184,7 +184,7 @@ int ReplaceFile(const MString& src_file, const MString& dest_file, const MapType
     int ret = EXITCODE_SUCCESS;
     if (!mfile_PutContents(dest_file.c_str(), &new_bin[0], new_bin.size()))
     {
-        stderr_wsprintf(TEXT("ERROR: Unable to write file: '%s'\n"), dest_file.c_str());
+        stderr_wsprintf(TEXT("ERROR: Unable to write file: '%s'.\n"), dest_file.c_str());
         ret = EXITCODE_CANTWRITE;
     }
 
