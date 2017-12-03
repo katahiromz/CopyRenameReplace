@@ -23,6 +23,7 @@ enum EXITCODE
 
 void show_help(void)
 {
+    using namespace std;
     printf("crr --- CopyRenameReplace version 0.8 by katahiromz\n");
     printf("\n");
     printf("Copies files/directories, with renaming and replacing.\n");
@@ -35,6 +36,7 @@ void show_help(void)
 
 void stderr_wsprintf(const TCHAR *szFormat, ...)
 {
+    using namespace std;
     TCHAR szOutput[1024];
     va_list va;
     va_start(va, szFormat);
