@@ -23,7 +23,7 @@ enum EXITCODE
 
 void show_help(void)
 {
-    printf("crr --- CopyRenameReplace version 0.7 by katahiromz\n");
+    printf("crr --- CopyRenameReplace version 0.8 by katahiromz\n");
     printf("\n");
     printf("Copies files/directories, with renaming and replacing.\n");
     printf("\n");
@@ -282,6 +282,12 @@ int CopyRenameReplaceDir(const MString& path0, const MString& path1, const MapTy
 
 int CopyRenameReplaceMain(const MString& path0, const MString& path1, const MapType& the_map)
 {
+    if (path0 == path1)
+    {
+        stderr_wsprintf(TEXT("ERROR: source and destination are same.\n"));
+        return EXITCODE_INVALIDDEST;
+    }
+
     const MChar *src = path0.c_str(), *dest = path1.c_str();
     if (mdir_Exists(src))
     {
