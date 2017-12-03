@@ -347,6 +347,12 @@ int CopyRenameReplace(const MString& item0, const MString& item1, const MapType&
     mpath_GetFullPath(path0, item0.c_str());
     mpath_GetFullPath(path1, item1.c_str());
 
+    if (lstrlen(path0) + 1 >= MAX_PATH || lstrlen(path1) + 1 >= MAX_PATH)
+    {
+        stderr_wsprintf(TEXT("ERROR: path is too long.\n"));
+        return EXITCODE_TOOLONGPATH;
+    }
+
     MChar *title = mpath_FindTitle(path1);
     MString str = title;
     ReplaceStringByMap(str, the_map);
