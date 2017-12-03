@@ -16,7 +16,8 @@ enum EXITCODE
     EXITCODE_NOTFILE,
     EXITCODE_TOOLONGPATH,
     EXITCODE_INVALIDNAME,
-    EXITCODE_INVALIDCHAR
+    EXITCODE_INVALIDCHAR,
+    EXITCODE_INVALIDARG
 };
 
 /**************************************************************************/
@@ -385,12 +386,18 @@ int main(int argc, char **argv)
     char **targv = argv;
 #endif
 
-    if (argc < 3 || (argc % 2 == 0) ||
-        lstrcmpi(targv[1], TEXT("--help")) == 0 ||
+    if (argc < 3 || (argc % 2 == 0))
+    {
+        stderr_wsprintf("ERROR: invalid arguments\n");
+        show_help();
+        return EXITCODE_INVALIDARG;
+    }
+
+    if (lstrcmpi(targv[1], TEXT("--help")) == 0 ||
         lstrcmpi(targv[1], TEXT("--version")) == 0)
     {
         show_help();
-        return 0;
+        return EXITCODE_SUCCESS;
     }
 
     MapType the_map;
