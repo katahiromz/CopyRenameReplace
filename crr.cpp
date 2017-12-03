@@ -351,12 +351,10 @@ int CopyRenameReplace(const MString& item0, const MString& item1, const MapType&
         mpath_AddSep(path0);
         mpath_AddSep(path1);
     }
-
-    MString strPath0 = path0, strPath1 = path1;
-
     stderr_wsprintf(TEXT("source     : \"%s\"\n"), path0);
     stderr_wsprintf(TEXT("destination: \"%s\"\n"), path1);
 
+    MString strPath0 = path0, strPath1 = path1;
     if (strPath1.find(strPath0) == 0)
     {
         stderr_wsprintf(TEXT("ERROR: destination contains source directory.\n"));
