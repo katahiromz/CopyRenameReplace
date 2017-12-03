@@ -343,7 +343,7 @@ int CopyRenameReplace(const MString& item0, const MString& item1, const MapType&
         return EXITCODE_TOOLONGPATH;
     }
 
-    MChar path0[MAX_PATH], path1[MAX_PATH];
+    MChar path0[MAX_PATH * 2], path1[MAX_PATH * 2];
     mpath_GetFullPath(path0, item0.c_str());
     mpath_GetFullPath(path1, item1.c_str());
 
