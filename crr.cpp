@@ -385,7 +385,7 @@ int main(int argc, char **argv)
     char **targv = argv;
 #endif
 
-    if (argc < 3 ||
+    if (argc < 3 || (argc % 2 == 0) ||
         lstrcmpi(targv[1], TEXT("--help")) == 0 ||
         lstrcmpi(targv[1], TEXT("--version")) == 0)
     {
