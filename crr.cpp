@@ -23,7 +23,7 @@ enum EXITCODE
 
 void show_help(void)
 {
-    printf("crr --- CopyRenameReplace version 0.5 by katahiromz\n");
+    printf("crr --- CopyRenameReplace version 0.6 by katahiromz\n");
     printf("Copies files/directories, with renaming and replacing \"string1\" with \"string2\", \"string3\" with \"string4\", ...\n");
     printf("\n");
     printf("Usage: crr \"source\" \"destination\"\n");
@@ -210,6 +210,7 @@ int CopyRenameReplaceFile(const MString& path0, const MString& path1, const MapT
     ret = ReplaceFile(path0, szPath1, the_map);
     if (ret == EXITCODE_SUCCESS)
     {
+        stderr_wsprintf(TEXT("OK: \"%s\" --> \"%s\"\n"), path0.c_str(), szPath1);
         stderr_wsprintf(TEXT("Done.\n"));
     }
     return ret;
