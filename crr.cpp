@@ -23,7 +23,7 @@ enum EXITCODE
 
 void show_help(void)
 {
-    printf("crr --- CopyRenameReplace version 0.6 by katahiromz\n");
+    printf("crr --- CopyRenameReplace version 0.7 by katahiromz\n");
     printf("\n");
     printf("Copies files/directories, with renaming and replacing.\n");
     printf("\n");
@@ -196,22 +196,10 @@ int ReplaceFile(const MString& src_file, const MString& dest_file, const MapType
 
 int CopyRenameReplaceFile(const MString& path0, const MString& path1, const MapType& the_map)
 {
-    MChar szPath1[MAX_PATH];
-    lstrcpy(szPath1, path1.c_str());
-
-    MChar *pch = mpath_FindTitle(szPath1);
-    int ret = CheckName(pch);
-    if (ret)
-        return ret;
-
-    MString str = pch;
-    ReplaceStringByMap(str, the_map);
-    lstrcpy(pch, str.c_str());
-
-    ret = ReplaceFile(path0, szPath1, the_map);
+    int ret = ReplaceFile(path0, path1, the_map);
     if (ret == EXITCODE_SUCCESS)
     {
-        stderr_wsprintf(TEXT("OK: \"%s\" --> \"%s\"\n"), path0.c_str(), szPath1);
+        stderr_wsprintf(TEXT("OK: \"%s\" --> \"%s\"\n"), path0.c_str(), path1.c_str());
         stderr_wsprintf(TEXT("Done.\n"));
     }
     return ret;
@@ -310,7 +298,7 @@ int CopyRenameReplaceMain(const MString& path0, const MString& path1, const MapT
             stderr_wsprintf(TEXT("ERROR: destination '%s' is not directory.\n"), dest);
             return EXITCODE_NOTDIR;
         }
-        return CopyRenameReplaceDir(path0, path1, the_map);
+        return CopyRenameReplaceDir(src, dest, the_map);
     }
     else
     {
@@ -349,6 +337,15 @@ int CopyRenameReplace(const MString& item0, const MString& item1, const MapType&
     MChar path0[MAX_PATH], path1[MAX_PATH];
     mpath_GetFullPath(path0, item0.c_str());
     mpath_GetFullPath(path1, item1.c_str());
+
+    MChar *title = mpath_FindTitle(path1);
+    MString str = title;
+    ReplaceStringByMap(str, the_map);
+    lstrcpy(title, str.c_str());
+    int ret = CheckName(title);
+    if (ret)
+        return ret;
+
     if (mdir_Exists(path0))
     {
         mpath_AddSep(path0);
@@ -357,13 +354,16 @@ int CopyRenameReplace(const MString& item0, const MString& item1, const MapType&
 
     MString strPath0 = path0, strPath1 = path1;
 
+    stderr_wsprintf(TEXT("source     : \"%s\"\n"), path0);
+    stderr_wsprintf(TEXT("destination: \"%s\"\n"), path1);
+
     if (strPath1.find(strPath0) == 0)
     {
         stderr_wsprintf(TEXT("ERROR: destination contains source directory.\n"));
         return EXITCODE_INVALIDDEST;
     }
 
-    int ret = CopyRenameReplaceMain(strPath0, strPath1, the_map);
+    ret = CopyRenameReplaceMain(strPath0, strPath1, the_map);
 
     mdir_Set(cur_dir);
     return ret;
@@ -386,9 +386,6 @@ int main(int argc, char **argv)
         show_help();
         return 0;
     }
-
-    stderr_wsprintf(TEXT("source     : \"%s\"\n"), targv[1]);
-    stderr_wsprintf(TEXT("destination: \"%s\"\n"), targv[2]);
 
     MapType the_map;
     int k = 0;
