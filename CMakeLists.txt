@@ -66,6 +66,13 @@ endif()
 
 ##############################################################################
 
+# Use Unicode?
+option(USE_UNICODE "Use Unicode" OFF)
+if(USE_UNICODE)
+    add_definitions(-DUNIOCDE -D_UNICODE)
+    message(STATUS "Using Unicode")
+endif()
+
 # add EXE
 add_executable(crr crr.cpp)
 
