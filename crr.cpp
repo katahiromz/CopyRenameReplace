@@ -28,8 +28,8 @@ void show_help(void)
     printf("Copies files/directories, with renaming and replacing.\n");
     printf("\n");
     printf("Usage: crr \"source\" \"destination\"\n");
-    printf("       crr \"source\" \"destination\" \"replacee_1\" \"replace_with_1\"\n");
-    printf("       crr \"source\" \"destination\" \"replacee_1\" \"replace_with_1\" \"replacee_2\" \"replace_with_2\" ...\n");
+    printf("       crr \"source\" \"destination\" \"replacee\" \"replace_with\"\n");
+    printf("       crr \"source\" \"destination\" \"replacee\" \"replace_with\" \"replacee\" \"replace_with\" ...\n");
     printf("\n");
 }
 
