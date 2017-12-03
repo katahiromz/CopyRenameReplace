@@ -50,7 +50,7 @@ int CheckChars(const MChar *str)
 {
     for (const MChar *pch = str; *pch; ++pch)
     {
-        const MChar *found = _tcschr(TEXT("\\/:,;*?\"<>|+&~"), *str);
+        const MChar *found = _tcschr(TEXT("\\/:,;*?\"<>|+&~"), *pch);
         if (found)
         {
             stderr_wsprintf(
