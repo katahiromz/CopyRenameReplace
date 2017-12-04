@@ -109,7 +109,7 @@ int CheckName(const MChar *name)
 
 bool IsMarkupFile(const MChar *filename)
 {
-    const MChar *pch = mpath_FindDotExt(const_cast<MChar *>(filename));
+    const MChar *pch = mpath_FindDotExt(filename);
 
     if (lstrcmpi(pch, TEXT(".htm")) == 0 ||
         lstrcmpi(pch, TEXT(".html")) == 0 ||
