@@ -107,6 +107,21 @@ int CheckName(const MChar *name)
     return ret;
 }
 
+bool IsMarkupFile(const MChar *filename)
+{
+    const MChar *pch = mpath_FindDotExt(const_cast<MChar *>(filename));
+
+    if (lstrcmpi(pch, TEXT(".htm")) == 0 ||
+        lstrcmpi(pch, TEXT(".html")) == 0 ||
+        lstrcmpi(pch, TEXT(".xml")) == 0 ||
+        lstrcmpi(pch, TEXT(".shtml")) == 0 ||
+        lstrcmpi(pch, TEXT(".xhtml")) == 0)
+    {
+        return true;
+    }
+    return false;
+}
+
 /**************************************************************************/
 
 struct MapEntry
@@ -181,6 +196,19 @@ int ReplaceFile(const MString& src_file, const MString& dest_file, const MapType
     ReplaceStringByMap(text, the_map);
     wide = MTextToWide(text);
 #endif
+
+    if (text_type.nEncoding == MTENC_ASCII && IsMarkupFile(src_file.c_str()))
+    {
+        if (wide.find(L"charset=\"UTF-8\"") != std::wstring::npos)
+        {
+            text_type.nEncoding = MTENC_UTF8;
+        }
+        else if (wide.find(L"charset=\"Shift_JIS\"") != std::wstring::npos ||
+                 wide.find(L"charset=\"x-sjis\"") != std::wstring::npos)
+        {
+            text_type.nEncoding = MTENC_ANSI;
+        }
+    }
 
     text_type.nNewLine = MNEWLINE_NOCHANGE;
     std::string new_bin = mbin_from_str(wide, text_type);
